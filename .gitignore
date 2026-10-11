@@ -42,3 +42,24 @@ borderline_samples_*.csv
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# ==================== 开发/调试脚本 ====================
+# 这些文件仅用于本地调试，保留在硬盘上但不进版本库
+test_*.py
+test_*.png
+test_*.bat
+check_*.py
+Ashare-mcp/test_*.py
+
+# ==================== 一次性工具脚本 ====================
+# 已不再使用的独立脚本，无任何模块引用
+Get_Code.py
+generate_report.py
+compute_stats.py
+regenerate_random_forest_figures.py
+use_mcp_example.py
+
+# ==================== 零散产物文件 ====================
+ConfusionMatrix.png
+sh000001_*.png
+stock_comments_with_sentiment_optimized.csv
