@@ -58,10 +58,31 @@ except Exception as e:
     ASHARE_DIRECT_AVAILABLE = False
     ASHARE_DIRECT_WARNING = f"导入ashare_mcp模块时出错: {e}"
 
-# 配置：main.py使用的Python解释器路径
-# 使用系统Python路径，避免streamlit环境与TensorFlow环境冲突
-MAIN_PYTHON_PATH = r"E:\python3.9\python.exe"  # 系统Python路径
-# 如果需要使用虚拟环境，请修改为虚拟环境的Python路径，例如：r"venv\Scripts\python.exe"
+# 配置：main.py 使用的 Python 解释器路径
+# main.py 需要 TensorFlow + PyTorch，而界面所在的虚拟环境（streamlit_env）
+# 可能没装它们，所以按以下优先级自动选择解释器：
+#   1. 环境变量 STOCK_MAIN_PYTHON 显式指定
+#   2. 当前解释器（若它已装好 tensorflow —— 单环境部署时就是这种情况）
+#   3. 开发机上并存的系统 Python（双环境部署时使用）
+#   4. 兜底：当前解释器
+def _pick_main_python():
+    override = os.environ.get("STOCK_MAIN_PYTHON")
+    if override and os.path.isfile(override):
+        return override
+    try:
+        import importlib.util
+        if importlib.util.find_spec("tensorflow") is not None:
+            return sys.executable
+    except Exception:
+        pass
+    for candidate in (r"E:\python3.9\python.exe",):
+        if os.path.isfile(candidate):
+            return candidate
+    return sys.executable
+
+
+MAIN_PYTHON_PATH = _pick_main_python()
+# 如需强制指定，可设环境变量 STOCK_MAIN_PYTHON，例如：r"venv\Scripts\python.exe"
 
 # 异步获取股票数据函数
 async def get_stock_price_async(code: str, count: int = 10, frequency: str = '1d', end_date: str = ''):

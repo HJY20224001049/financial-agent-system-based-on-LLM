@@ -37,9 +37,30 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# 默认词典路径（替换成你的实际路径）
-DEFAULT_POS_DICT = r"E:\毕业设计\newsdata\CFSD中文金融情感词典\正面词典.csv"
-DEFAULT_NEG_DICT = r"E:\毕业设计\newsdata\CFSD中文金融情感词典\负面词典.csv"
+# 金融情感词典路径
+# 按顺序查找：项目内 data/情感词典/ -> 项目根 情感词典/ -> 开发机上的原始绝对路径。
+# 词典随仓库一起分发，别人 clone 下来即可直接使用。
+_HERE = os.path.dirname(os.path.abspath(__file__))
+_PROJECT_ROOT = os.path.dirname(_HERE)
+
+_DICT_DIR_CANDIDATES = [
+    os.path.join(_PROJECT_ROOT, "data", "情感词典"),
+    os.path.join(_PROJECT_ROOT, "情感词典"),
+    r"E:\毕业设计\newsdata\CFSD中文金融情感词典",
+]
+
+
+def _find_dict(filename):
+    """返回第一个存在的词典文件路径；都不存在时返回首选路径（便于报错定位）"""
+    for d in _DICT_DIR_CANDIDATES:
+        p = os.path.join(d, filename)
+        if os.path.isfile(p):
+            return p
+    return os.path.join(_DICT_DIR_CANDIDATES[0], filename)
+
+
+DEFAULT_POS_DICT = _find_dict("正面词典.csv")
+DEFAULT_NEG_DICT = _find_dict("负面词典.csv")
 
 
 class FinancialDictSentimentAnalyzer:
