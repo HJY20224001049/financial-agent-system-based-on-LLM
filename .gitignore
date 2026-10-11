@@ -1,0 +1,44 @@
+# ==================== Python 虚拟环境 ====================
+# 这些目录体积巨大（合计约 630MB）且可在任何机器上重建
+streamlit_env/
+venv/
+.venv/
+env/
+ENV/
+Ashare-mcp/.venv/
+
+# ==================== Python 编译缓存 ====================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ==================== IDE / 编辑器 ====================
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ==================== 运行时日志 ====================
+log/
+*.log
+output.log
+
+# ==================== 运行时产物（每次分析都会覆盖重写）====================
+final_analyse.txt
+final_analysis.txt
+riskanalysis.txt
+stock_comments.csv
+stock_comments_with_sentiment.csv
+stock_news_*.csv
+borderline_samples_*.csv
+
+# ==================== 操作系统文件 ====================
+.DS_Store
+Thumbs.db
+desktop.ini
